@@ -1,4 +1,4 @@
-
+import { MongoClient } from 'mongodb';
 
 async function handler(req, res) {
     if (req.method === 'POST') {
@@ -15,13 +15,36 @@ async function handler(req, res) {
             res.status(422).json({ message: 'Invalid input.' });
             return;
         }
-        // store in the database
+
         const newMessage = {
             email,
             name,
             message,
         };
-        console.log(newMessage)
+
+        let client;
+
+        try {
+            client = await MongoClient.connect(
+                'mongodb+srv://userdb:userdb@cluster0.bp9sj.mongodb.net/my-site?retryWrites=true&w=majority'
+            );
+        } catch (error) {
+            res.status(500).json({ message: 'Could not connect to database.' });
+            return;
+        }
+
+        const db = client.db();
+
+        try {
+            const result = await db.collection('messages').insertOne(newMessage);
+            newMessage.id = result.insertedId;
+        } catch (error) {
+            client.close();
+            res.status(500).json({ message: 'Storing message failed!' });
+            return;
+        }
+
+        client.close();
 
         res
             .status(201)
