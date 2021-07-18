@@ -1,8 +1,8 @@
 import { Fragment } from "react"
 import FeaturedPosts from "../components/home-page/Featured-posts"
 import Hero from "../components/home-page/Hero"
-import { getFeaturedPosts } from '../lib/posts-util'
-import Head from 'next/head';
+import { getFeaturedPosts } from "../lib/posts-util"
+import Head from "next/head";
 
 
 function HomePage(props) {
@@ -11,8 +11,8 @@ function HomePage(props) {
       <Head>
         <title>Lamees' Blog</title>
         <meta
-          name='description'
-          content='I post about programming and web development.'
+          name="description"
+          content="I post about programming and web development."
         />
       </Head>
       <Hero />
